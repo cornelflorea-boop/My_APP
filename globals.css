@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component utilities — RN-compatible only */
+@layer components {
+  /* Typography */
+  .heading-1 {
+    @apply text-[32px] font-bold text-text-primary;
+  }
+
+  .heading-2 {
+    @apply text-2xl font-semibold text-text-primary;
+  }
+
+  .heading-3 {
+    @apply text-xl font-semibold text-text-primary;
+  }
+
+  .heading-4 {
+    @apply text-base font-medium text-text-primary;
+  }
+
+  .body-large {
+    @apply text-base font-normal text-text-primary;
+  }
+
+  .body-medium {
+    @apply text-sm font-normal text-text-primary;
+  }
+
+  .body-small {
+    @apply text-[13px] font-normal text-text-primary;
+  }
+
+  .caption {
+    @apply text-[11px] font-normal text-text-primary;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-white rounded-xl border border-border p-4;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply px-4 py-3 rounded-xl bg-lingua-purple items-center;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-3 rounded-xl bg-surface border border-border items-center;
+  }
+}
