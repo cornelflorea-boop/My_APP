@@ -7,13 +7,14 @@ import {
   StatusBar,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { colors } from "../theme";
 
 export default function Onboarding() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.neutral.background }}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.neutral.background} />
 
       <View style={{ flex: 1, paddingHorizontal: 24 }}>
         {/* Logo + App Name */}
@@ -35,7 +36,7 @@ export default function Onboarding() {
               marginLeft: 8,
               fontSize: 22,
               fontFamily: "Poppins-SemiBold",
-              color: "#0D132B",
+              color: colors.neutral.textPrimary,
             }}
           >
             muolingo
@@ -48,7 +49,7 @@ export default function Onboarding() {
             style={{
               fontSize: 34,
               fontFamily: "Poppins-Bold",
-              color: "#0D132B",
+              color: colors.neutral.textPrimary,
               lineHeight: 42,
             }}
           >
@@ -59,7 +60,7 @@ export default function Onboarding() {
               style={{
                 fontSize: 34,
                 fontFamily: "Poppins-Bold",
-                color: "#6C4EF5",
+                color: colors.primary.purple,
                 lineHeight: 42,
               }}
             >
@@ -69,7 +70,7 @@ export default function Onboarding() {
               style={{
                 fontSize: 34,
                 fontFamily: "Poppins-Bold",
-                color: "#0D132B",
+                color: colors.neutral.textPrimary,
                 lineHeight: 42,
               }}
             >
@@ -83,7 +84,7 @@ export default function Onboarding() {
           style={{
             fontSize: 15,
             fontFamily: "Poppins-Regular",
-            color: "#6B7280",
+            color: colors.neutral.textSecondary,
             lineHeight: 24,
             marginBottom: 16,
           }}
@@ -117,7 +118,7 @@ export default function Onboarding() {
               style={{
                 fontSize: 16,
                 fontFamily: "Poppins-Medium",
-                color: "#0D132B",
+                color: colors.neutral.textPrimary,
               }}
             >
               Hello!
@@ -141,7 +142,7 @@ export default function Onboarding() {
               style={{
                 fontSize: 16,
                 fontFamily: "Poppins-Medium",
-                color: "#6C4EF5",
+                color: colors.primary.purple,
               }}
             >
               ¡Hola!
@@ -172,7 +173,7 @@ export default function Onboarding() {
               style={{
                 fontSize: 16,
                 fontFamily: "Poppins-Medium",
-                color: "#FF4D4F",
+                color: colors.semantic.error,
               }}
             >
               你好!
@@ -185,7 +186,7 @@ export default function Onboarding() {
       <View style={{ paddingHorizontal: 24, paddingBottom: 32 }}>
         <TouchableOpacity
           style={{
-            backgroundColor: "#6C4EF5",
+            backgroundColor: colors.primary.purple,
             borderRadius: 20,
             paddingVertical: 18,
             flexDirection: "row",
@@ -199,7 +200,7 @@ export default function Onboarding() {
             style={{
               fontSize: 18,
               fontFamily: "Poppins-SemiBold",
-              color: "#FFFFFF",
+              color: colors.neutral.background,
             }}
           >
             Get Started
@@ -208,7 +209,7 @@ export default function Onboarding() {
             style={{
               fontSize: 22,
               fontFamily: "Poppins-Bold",
-              color: "#FFFFFF",
+              color: colors.neutral.background,
               marginLeft: 10,
             }}
           >
