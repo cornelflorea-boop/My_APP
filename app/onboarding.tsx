@@ -193,7 +193,7 @@ export default function Onboarding() {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => router.back()}
+          onPress={() => router.push("/sign-up")}
           activeOpacity={0.85}
         >
           <Text
