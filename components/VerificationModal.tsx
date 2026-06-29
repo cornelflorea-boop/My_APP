@@ -158,7 +158,7 @@ export default function VerificationModal({
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <TextInput
                   key={i}
-                  ref={(el) => (inputRefs.current[i] = el)}
+                  ref={(el) => { inputRefs.current[i] = el; }}
                   value={code[i]}
                   onChangeText={(text) => handleDigitChange(text, i)}
                   onKeyPress={(e) => handleKeyPress(e, i)}

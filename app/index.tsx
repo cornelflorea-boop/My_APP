@@ -1,4 +1,4 @@
-import { useAuth } from "@clerk/expo";
+import { useAuth, useClerk } from "@clerk/expo";
 import { Redirect } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 export default function Index() {
   const router = useRouter();
   const { isSignedIn, isLoaded } = useAuth();
+  const { signOut } = useClerk();
 
   if (!isLoaded) return null;
   if (!isSignedIn) return <Redirect href="/onboarding" />;
@@ -46,6 +47,49 @@ export default function Index() {
           }}
         >
           View Onboarding
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          marginTop: 16,
+          backgroundColor: "#6C4EF5",
+          borderRadius: 14,
+          paddingHorizontal: 32,
+          paddingVertical: 14,
+        }}
+        onPress={() => router.push("/language-selection")}
+        activeOpacity={0.85}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "Poppins-SemiBold",
+            color: "#FFFFFF",
+          }}
+        >
+          Choose Language
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          marginTop: 16,
+          borderWidth: 1,
+          borderColor: "#6C4EF5",
+          borderRadius: 14,
+          paddingHorizontal: 32,
+          paddingVertical: 14,
+        }}
+        onPress={() => signOut()}
+        activeOpacity={0.85}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "Poppins-SemiBold",
+            color: "#6C4EF5",
+          }}
+        >
+          Sign Out
         </Text>
       </TouchableOpacity>
     </View>
