@@ -1,8 +1,14 @@
+import { useAuth } from "@clerk/expo";
+import { Redirect } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function Index() {
   const router = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) return null;
+  if (!isSignedIn) return <Redirect href="/onboarding" />;
 
   return (
     <View

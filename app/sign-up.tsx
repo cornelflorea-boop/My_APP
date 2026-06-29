@@ -11,18 +11,26 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { useSignUp, useSSO } from "@clerk/expo";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
 import { colors } from "../theme";
 import VerificationModal from "../components/VerificationModal";
+
+WebBrowser.maybeCompleteAuthSession();
 
 function SocialButton({
   icon,
   label,
+  onPress,
 }: {
   icon: React.ReactNode;
   label: string;
+  onPress?: () => void;
 }) {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -55,10 +63,76 @@ function SocialButton({
 
 export default function SignUp() {
   const router = useRouter();
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const { startSSOFlow } = useSSO();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [verifyError, setVerifyError] = useState("");
+
+  const handleSignUp = async () => {
+    if (!isLoaded || !signUp) return;
+    setError("");
+    setIsLoading(true);
+    try {
+      await signUp.create({ emailAddress: email, password });
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      setModalVisible(true);
+    } catch (err: any) {
+      setError(err.errors?.[0]?.message ?? "Sign up failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerify = async (code: string) => {
+    if (!isLoaded || !signUp) return;
+    setVerifyError("");
+    try {
+      const result = await signUp.attemptEmailAddressVerification({ code });
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.replace("/");
+      }
+    } catch (err: any) {
+      setVerifyError(
+        err.errors?.[0]?.message ?? "Invalid code. Please try again."
+      );
+    }
+  };
+
+  const handleResend = async () => {
+    if (!isLoaded || !signUp) return;
+    try {
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+    } catch (err: any) {
+      setVerifyError(err.errors?.[0]?.message ?? "Failed to resend code.");
+    }
+  };
+
+  const handleSSOAuth = async (
+    strategy: "oauth_google" | "oauth_apple" | "oauth_facebook"
+  ) => {
+    try {
+      const { createdSessionId, setActive: setActiveSSO } = await startSSOFlow(
+        {
+          strategy,
+          redirectUrl: Linking.createURL("/"),
+        }
+      );
+      if (createdSessionId) {
+        await setActiveSSO!({ session: createdSessionId });
+        router.replace("/");
+      }
+    } catch (err: any) {
+      console.error("SSO error:", err);
+      setError(err.errors?.[0]?.message ?? err.message ?? "Social sign in failed.");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -112,9 +186,7 @@ export default function SignUp() {
         </Text>
 
         {/* Mascot */}
-        <View
-          style={{ alignItems: "center", marginBottom: 20 }}
-        >
+        <View style={{ alignItems: "center", marginBottom: 20 }}>
           <Image
             source={require("../assets/images/mascot-auth.png")}
             style={{ width: 140, height: 140 }}
@@ -183,9 +255,7 @@ export default function SignUp() {
           >
             Password
           </Text>
-          <View
-            style={{ flexDirection: "row", alignItems: "center" }}
-          >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
               value={password}
               onChangeText={setPassword}
@@ -212,15 +282,32 @@ export default function SignUp() {
           </View>
         </View>
 
+        {/* Error message */}
+        {error ? (
+          <Text
+            style={{
+              fontSize: 13,
+              fontFamily: "Poppins-Regular",
+              color: colors.semantic.error,
+              marginBottom: 12,
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </Text>
+        ) : null}
+
         {/* Sign Up Button */}
         <TouchableOpacity
-          onPress={() => setModalVisible(true)}
+          onPress={handleSignUp}
+          disabled={!email || !password || isLoading}
           style={{
             backgroundColor: colors.primary.purple,
             borderRadius: 20,
             paddingVertical: 18,
             alignItems: "center",
             marginBottom: 24,
+            opacity: !email || !password || isLoading ? 0.6 : 1,
           }}
           activeOpacity={0.85}
         >
@@ -265,14 +352,17 @@ export default function SignUp() {
         <SocialButton
           icon={<AntDesign name="google" size={20} color="#DB4437" />}
           label="Continue with Google"
+          onPress={() => handleSSOAuth("oauth_google")}
         />
         <SocialButton
-          icon={<AntDesign name="facebook-square" size={20} color="#1877F2" />}
+          icon={<Ionicons name="logo-facebook" size={20} color="#1877F2" />}
           label="Continue with Facebook"
+          onPress={() => handleSSOAuth("oauth_facebook")}
         />
         <SocialButton
-          icon={<AntDesign name="apple1" size={20} color="#000000" />}
+          icon={<Ionicons name="logo-apple" size={20} color="#000000" />}
           label="Continue with Apple"
+          onPress={() => handleSSOAuth("oauth_apple")}
         />
 
         {/* Footer */}
@@ -310,7 +400,13 @@ export default function SignUp() {
       <VerificationModal
         visible={modalVisible}
         email={email}
-        onClose={() => setModalVisible(false)}
+        onClose={() => {
+          setModalVisible(false);
+          setVerifyError("");
+        }}
+        onVerify={handleVerify}
+        onResend={handleResend}
+        error={verifyError}
       />
     </SafeAreaView>
   );

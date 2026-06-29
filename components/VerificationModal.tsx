@@ -8,18 +8,29 @@ import {
   Platform,
   Pressable,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { colors } from "../theme";
 
 interface Props {
   visible: boolean;
   email: string;
   onClose: () => void;
+  onVerify: (code: string) => Promise<void>;
+  onResend: () => Promise<void>;
+  error?: string;
+  isLoading?: boolean;
 }
 
-export default function VerificationModal({ visible, email, onClose }: Props) {
-  const router = useRouter();
+export default function VerificationModal({
+  visible,
+  email,
+  onClose,
+  onVerify,
+  onResend,
+  error,
+  isLoading = false,
+}: Props) {
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
@@ -43,9 +54,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
     }
 
     if (newCode.every((d) => d !== "")) {
-      setTimeout(() => {
-        router.replace("/");
-      }, 300);
+      onVerify(newCode.join(""));
     }
   };
 
@@ -143,7 +152,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginBottom: 32,
+                marginBottom: error ? 12 : 32,
               }}
             >
               {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -156,6 +165,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
                   keyboardType="number-pad"
                   maxLength={1}
                   selectTextOnFocus
+                  editable={!isLoading}
                   style={{
                     width: 46,
                     height: 56,
@@ -171,13 +181,37 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
                     fontSize: 22,
                     fontFamily: "Poppins-Bold",
                     color: colors.neutral.textPrimary,
+                    opacity: isLoading ? 0.5 : 1,
                   }}
                 />
               ))}
             </View>
 
+            {/* Error message */}
+            {error ? (
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: "Poppins-Regular",
+                  color: colors.semantic.error,
+                  textAlign: "center",
+                  marginBottom: 16,
+                }}
+              >
+                {error}
+              </Text>
+            ) : null}
+
+            {/* Loading indicator */}
+            {isLoading ? (
+              <ActivityIndicator
+                color={colors.primary.purple}
+                style={{ marginBottom: 16 }}
+              />
+            ) : null}
+
             {/* Resend */}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onResend} disabled={isLoading}>
               <Text
                 style={{
                   fontSize: 14,
