@@ -69,13 +69,13 @@ export default function SignIn() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const { startSSOFlow } = useSSO();
 
-  if (isSignedIn) return <Redirect href="/" />;
-
   const [email, setEmail] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [verifyError, setVerifyError] = useState("");
+
+  if (isSignedIn) return <Redirect href="/" />;
 
   const handleSignIn = async () => {
     if (!isLoaded || !signIn) return;
@@ -154,7 +154,6 @@ export default function SignIn() {
       );
       if (createdSessionId) {
         await setActiveSSO!({ session: createdSessionId });
-        router.replace("/");
       }
     } catch (err: any) {
       console.error("SSO error:", err);
