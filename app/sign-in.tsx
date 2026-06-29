@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { useSignIn, useSSO } from "@clerk/expo";
+import { useSSO, useAuth } from "@clerk/expo";
+import { useSignIn } from "@clerk/expo/legacy";
+import { Redirect } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 import { colors } from "../theme";
@@ -63,8 +65,11 @@ function SocialButton({
 
 export default function SignIn() {
   const router = useRouter();
+  const { isSignedIn } = useAuth();
   const { isLoaded, signIn, setActive } = useSignIn();
   const { startSSOFlow } = useSSO();
+
+  if (isSignedIn) return <Redirect href="/" />;
 
   const [email, setEmail] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
