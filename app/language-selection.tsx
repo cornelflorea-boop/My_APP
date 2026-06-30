@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { usePostHog } from "posthog-react-native";
 import { colors } from "../theme";
 import { LANGUAGES } from "../data/languages";
 import { useLanguageStore } from "../store/useLanguageStore";
@@ -26,6 +27,7 @@ const LEARNER_COUNTS: Record<string, string> = {
 
 export default function LanguageSelection() {
   const router = useRouter();
+  const posthog = usePostHog();
   const { setLanguage } = useLanguageStore();
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
@@ -119,7 +121,10 @@ export default function LanguageSelection() {
           return (
             <TouchableOpacity
               key={lang.code}
-              onPress={() => setSelected(lang.code)}
+              onPress={() => {
+                posthog.capture("language_selected", { language: lang.code, language_name: lang.name });
+                setSelected(lang.code);
+              }}
               activeOpacity={0.85}
               style={{
                 flexDirection: "row",
@@ -211,6 +216,7 @@ export default function LanguageSelection() {
         <TouchableOpacity
           onPress={() => {
             if (selected) {
+              posthog.capture("language_confirmed", { language: selected });
               setLanguage(selected);
               router.replace("/");
             }

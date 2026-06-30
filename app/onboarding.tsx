@@ -7,10 +7,12 @@ import {
   StatusBar,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import { colors } from "../theme";
 
 export default function Onboarding() {
   const router = useRouter();
+  const posthog = usePostHog();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.neutral.background }}>
@@ -193,7 +195,10 @@ export default function Onboarding() {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => router.push("/sign-up")}
+          onPress={() => {
+            posthog.capture("onboarding_get_started");
+            router.push("/sign-up");
+          }}
           activeOpacity={0.85}
         >
           <Text

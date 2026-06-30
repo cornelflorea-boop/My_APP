@@ -16,6 +16,7 @@ import { useSignUp } from "@clerk/expo/legacy";
 import { Redirect } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import { usePostHog } from "posthog-react-native";
 import { colors } from "../theme";
 import VerificationModal from "../components/VerificationModal";
 
@@ -69,6 +70,7 @@ export default function SignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const { startSSOFlow } = useSSO();
 
+  const posthog = usePostHog();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -83,11 +85,13 @@ export default function SignUp() {
     if (!isLoaded || !signUp) return;
     setError("");
     setIsLoading(true);
+    posthog.capture("sign_up_attempted", { method: "email" });
     try {
       await signUp.create({ emailAddress: email, password });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setModalVisible(true);
     } catch (err: any) {
+      posthog.capture("sign_up_failed", { method: "email", error: err.errors?.[0]?.message });
       setError(err.errors?.[0]?.message ?? "Sign up failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -100,6 +104,7 @@ export default function SignUp() {
     try {
       const result = await signUp.attemptEmailAddressVerification({ code });
       if (result.status === "complete") {
+        posthog.capture("sign_up_completed", { method: "email" });
         await setActive({ session: result.createdSessionId });
         router.replace("/");
       }
@@ -122,6 +127,7 @@ export default function SignUp() {
   const handleSSOAuth = async (
     strategy: "oauth_google" | "oauth_apple" | "oauth_facebook"
   ) => {
+    posthog.capture("sign_up_attempted", { method: strategy });
     try {
       const { createdSessionId, setActive: setActiveSSO } = await startSSOFlow(
         {
@@ -130,10 +136,12 @@ export default function SignUp() {
         }
       );
       if (createdSessionId) {
+        posthog.capture("sign_up_completed", { method: strategy });
         await setActiveSSO!({ session: createdSessionId });
       }
     } catch (err: any) {
       console.error("SSO error:", err);
+      posthog.capture("sign_up_failed", { method: strategy, error: err.errors?.[0]?.message ?? err.message });
       setError(err.errors?.[0]?.message ?? err.message ?? "Social sign in failed.");
     }
   };
