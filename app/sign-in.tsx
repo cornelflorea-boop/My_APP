@@ -16,6 +16,7 @@ import { useSignIn } from "@clerk/expo/legacy";
 import { Redirect } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import { usePostHog } from "posthog-react-native";
 import { colors } from "../theme";
 import VerificationModal from "../components/VerificationModal";
 
@@ -69,6 +70,7 @@ export default function SignIn() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const { startSSOFlow } = useSSO();
 
+  const posthog = usePostHog();
   const [email, setEmail] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,6 +83,7 @@ export default function SignIn() {
     if (!isLoaded || !signIn) return;
     setError("");
     setIsLoading(true);
+    posthog.capture("sign_in_attempted", { method: "email" });
     try {
       const response = await signIn.create({ identifier: email });
       const emailFactor = response.supportedFirstFactors?.find(
@@ -99,6 +102,7 @@ export default function SignIn() {
         );
       }
     } catch (err: any) {
+      posthog.capture("sign_in_failed", { method: "email", error: err.errors?.[0]?.message });
       setError(err.errors?.[0]?.message ?? "Sign in failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -114,6 +118,7 @@ export default function SignIn() {
         code,
       });
       if (result.status === "complete") {
+        posthog.capture("sign_in_completed", { method: "email" });
         await setActive({ session: result.createdSessionId });
         router.replace("/");
       }
@@ -136,6 +141,7 @@ export default function SignIn() {
           emailAddressId: (emailFactor as { emailAddressId: string })
             .emailAddressId,
         });
+        posthog.capture("sign_in_verification_resent");
       }
     } catch (err: any) {
       setVerifyError(err.errors?.[0]?.message ?? "Failed to resend code.");
@@ -145,6 +151,7 @@ export default function SignIn() {
   const handleSSOAuth = async (
     strategy: "oauth_google" | "oauth_apple" | "oauth_facebook"
   ) => {
+    posthog.capture("sign_in_attempted", { method: strategy });
     try {
       const { createdSessionId, setActive: setActiveSSO } = await startSSOFlow(
         {
@@ -153,10 +160,12 @@ export default function SignIn() {
         }
       );
       if (createdSessionId) {
+        posthog.capture("sign_in_completed", { method: strategy });
         await setActiveSSO!({ session: createdSessionId });
       }
     } catch (err: any) {
       console.error("SSO error:", err);
+      posthog.capture("sign_in_failed", { method: strategy, error: err.errors?.[0]?.message ?? err.message });
       setError(err.errors?.[0]?.message ?? err.message ?? "Social sign in failed.");
     }
   };
