@@ -212,7 +212,7 @@ export default function HomeScreen() {
           <Ionicons name="videocam" size={20} color="#FFFFFF" />
         </TouchableOpacity>
         <Image
-          source={{ uri: "https://i.pravatar.cc/200?img=47" }}
+          source={Images.mascotWelcome}
           style={styles.tutorPhoto}
         />
       </View>
