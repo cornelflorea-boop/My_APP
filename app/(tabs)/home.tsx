@@ -51,7 +51,9 @@ interface PlanItem {
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
-  const { selectedLanguage } = useLanguageStore();
+  const { selectedLanguage, _hasHydrated } = useLanguageStore();
+
+  if (!_hasHydrated) return null;
 
   const language = selectedLanguage ? getLanguageByCode(selectedLanguage) : null;
   const units = selectedLanguage ? getUnitsByLanguage(selectedLanguage) : [];
