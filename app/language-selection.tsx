@@ -121,10 +121,7 @@ export default function LanguageSelection() {
           return (
             <TouchableOpacity
               key={lang.code}
-              onPress={() => {
-                posthog.capture("language_selected", { language: lang.code, language_name: lang.name });
-                setSelected(lang.code);
-              }}
+              onPress={() => setSelected(lang.code)}
               activeOpacity={0.85}
               style={{
                 flexDirection: "row",
@@ -216,7 +213,9 @@ export default function LanguageSelection() {
         <TouchableOpacity
           onPress={() => {
             if (selected) {
-              posthog.capture("language_confirmed", { language: selected });
+              const lang = LANGUAGES.find((l) => l.code === selected);
+              posthog.capture("language_selected", { language: selected, language_name: lang?.name });
+              posthog.capture("language_confirmed", { language: selected, language_name: lang?.name });
               setLanguage(selected);
               router.replace("/");
             }
