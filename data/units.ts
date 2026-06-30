@@ -46,6 +46,28 @@ export const UNITS: Unit[] = [
     difficulty: "beginner",
     color: "#FF8A00",
   },
+  {
+    id: "de-unit-2",
+    languageCode: "de",
+    title: "Everyday Life",
+    description: "Talk about days, colors, family, and common objects.",
+    order: 2,
+    totalLessons: 3,
+    difficulty: "beginner",
+    color: "#21C16B",
+  },
+
+  // ── French · Unit 2 ────────────────────────────────────────────────────────
+  {
+    id: "fr-unit-2",
+    languageCode: "fr",
+    title: "Everyday Life",
+    description: "Talk about days, colors, family, and common objects.",
+    order: 2,
+    totalLessons: 3,
+    difficulty: "beginner",
+    color: "#21C16B",
+  },
 ];
 
 export function getUnitsByLanguage(languageCode: string): Unit[] {
