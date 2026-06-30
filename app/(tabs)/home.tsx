@@ -4,7 +4,6 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import { useUser } from "@clerk/expo";
@@ -115,9 +114,9 @@ export default function HomeScreen() {
         <View style={styles.headerRight}>
           <Image source={Images.streakFire} style={styles.streakIcon} />
           <Text style={styles.streakText}>{STREAK_COUNT}</Text>
-          <TouchableOpacity style={styles.bellButton} activeOpacity={0.7}>
+          <View style={styles.bellButton}>
             <Ionicons name="notifications-outline" size={22} color="#0D132B" />
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -159,9 +158,9 @@ export default function HomeScreen() {
           <Text style={styles.continueUnit}>
             {levelLabel} · Unit {currentUnit?.order ?? 1}
           </Text>
-          <TouchableOpacity style={styles.continueButton} activeOpacity={0.85}>
+          <View style={styles.continueButton}>
             <Text style={styles.continueButtonText}>Continue</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -169,9 +168,9 @@ export default function HomeScreen() {
       <View style={styles.planSection}>
         <View style={styles.planHeader}>
           <Text style={styles.planTitle}>Today's plan</Text>
-          <TouchableOpacity activeOpacity={0.7}>
+          <View>
             <Text style={styles.viewAll}>View all</Text>
-          </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.planList}>
@@ -208,9 +207,9 @@ export default function HomeScreen() {
           <Text style={styles.nextUpTitle}>AI Video Call</Text>
           <Text style={styles.nextUpSubtitle}>Practice speaking</Text>
         </View>
-        <TouchableOpacity style={styles.cameraButton} activeOpacity={0.85}>
+        <View style={styles.cameraButton}>
           <Ionicons name="videocam" size={20} color="#FFFFFF" />
-        </TouchableOpacity>
+        </View>
         <Image
           source={Images.mascotWelcome}
           style={styles.tutorPhoto}
