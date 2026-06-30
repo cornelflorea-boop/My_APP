@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme";
 import { LANGUAGES } from "../data/languages";
+import { useLanguageStore } from "../store/useLanguageStore";
 
 const LEARNER_COUNTS: Record<string, string> = {
   es: "28.4M learners",
@@ -25,6 +26,7 @@ const LEARNER_COUNTS: Record<string, string> = {
 
 export default function LanguageSelection() {
   const router = useRouter();
+  const { setLanguage } = useLanguageStore();
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -208,7 +210,10 @@ export default function LanguageSelection() {
       <View style={{ paddingHorizontal: 20, paddingTop: 12 }}>
         <TouchableOpacity
           onPress={() => {
-            if (selected) router.back();
+            if (selected) {
+              setLanguage(selected);
+              router.replace("/");
+            }
           }}
           activeOpacity={selected ? 0.85 : 1}
           style={{
