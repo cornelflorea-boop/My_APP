@@ -169,7 +169,7 @@ export default function HomeScreen() {
       {/* ── Today's Plan ─────────────────────────────────────────────────────── */}
       <View style={styles.planSection}>
         <View style={styles.planHeader}>
-          <Text style={styles.planTitle}>Today's plan</Text>
+          <Text style={styles.planTitle}>Today&apos;s plan</Text>
           <View>
             <Text style={styles.viewAll}>View all</Text>
           </View>
