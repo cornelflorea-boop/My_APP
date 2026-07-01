@@ -29,7 +29,7 @@ export default function Onboarding() {
           }}
         >
           <Image
-            source={require("../assets/images/moscot-logo.png")}
+            source={require("../assets/images/mascot-logo.png")}
             style={{ width: 44, height: 44 }}
             resizeMode="contain"
           />
