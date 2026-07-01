@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ScrollView,
   StatusBar,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,6 +13,8 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { getLessonById } from "../../data/lessons";
 import { Images } from "../../constants/images";
+import { fmtTime } from "../../utils/learnHelpers";
+import { CtrlBtn } from "../../components/lesson/CtrlBtn";
 
 const { height: SCREEN_H } = Dimensions.get("window");
 const TEACHER_H = Math.min(Math.max(Math.round(SCREEN_H * 0.38), 230), 340);
@@ -21,46 +22,6 @@ const TEACHER_H = Math.min(Math.max(Math.round(SCREEN_H * 0.38), 230), 340);
 const PURPLE = "#6C4EF5";
 const GREEN = "#21C16B";
 const BLUE = "#4D8BFF";
-const RED = "#FF3B30";
-
-function fmtTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  if (m === 0) return String(sec).padStart(2, "0");
-  return `${m}:${String(sec).padStart(2, "0")}`;
-}
-
-// ── Control button ─────────────────────────────────────────────────────────
-function CtrlBtn({
-  icon,
-  label,
-  onPress,
-  isEndCall = false,
-  active = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  onPress: () => void;
-  isEndCall?: boolean;
-  active?: boolean;
-}) {
-  return (
-    <View style={styles.ctrlItem}>
-      <TouchableOpacity
-        style={[
-          styles.ctrlBtn,
-          isEndCall && styles.ctrlBtnEnd,
-          active && styles.ctrlBtnActive,
-        ]}
-        onPress={onPress}
-        activeOpacity={0.75}
-      >
-        {icon}
-      </TouchableOpacity>
-      <Text style={styles.ctrlLabel}>{label}</Text>
-    </View>
-  );
-}
 
 // ── Screen ────────────────────────────────────────────────────────────────
 export default function AudioLessonScreen() {
@@ -401,31 +362,6 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 8,
   },
-  ctrlItem: {
-    alignItems: "center",
-    gap: 6,
-  },
-  ctrlBtn: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: "#F3F4F6",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  ctrlBtnEnd: {
-    backgroundColor: RED,
-  },
-  ctrlBtnActive: {
-    backgroundColor: "#EEE9FF",
-  },
-  ctrlLabel: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
-    color: "#6B7280",
-    textAlign: "center",
-  },
-
   // ── Feedback card
   feedbackCard: {
     flexDirection: "row",
