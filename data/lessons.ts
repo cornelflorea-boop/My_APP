@@ -10,6 +10,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 5,
+    imageKey: "mascotWelcome",
 
     goals: [
       { id: "g1", description: "Learn 5 greeting words", targetCount: 5 },
@@ -103,6 +104,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 6,
+    imageKey: "mascotAuth",
 
     goals: [
       { id: "g1", description: "Learn 4 introduction phrases", targetCount: 4 },
@@ -195,6 +197,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 5,
+    imageKey: "mascotWelcome",
 
     goals: [
       { id: "g1", description: "Learn 5 greeting words", targetCount: 5 },
@@ -288,6 +291,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 6,
+    imageKey: "mascotAuth",
     goals: [
       { id: "g1", description: "Learn 4 introduction phrases", targetCount: 4 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -325,6 +329,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 7,
+    imageKey: "treasure",
     goals: [
       { id: "g1", description: "Learn numbers 1 through 10", targetCount: 10 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -363,6 +368,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 6,
+    imageKey: "earth",
     goals: [
       { id: "g1", description: "Learn 5 color words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -401,6 +407,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 7,
+    imageKey: "palace",
     goals: [
       { id: "g1", description: "Learn all 7 days of the week", targetCount: 7 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -439,6 +446,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 7,
+    imageKey: "mascotLogo",
     goals: [
       { id: "g1", description: "Learn 5 family words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -477,6 +485,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 8,
+    imageKey: "streakFire",
     goals: [
       { id: "g1", description: "Learn 5 food and drink words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -515,6 +524,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 5,
+    imageKey: "mascotWelcome",
     goals: [
       { id: "g1", description: "Learn 5 greeting words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -553,6 +563,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 6,
+    imageKey: "mascotAuth",
     goals: [
       { id: "g1", description: "Learn 4 introduction phrases", targetCount: 4 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -590,6 +601,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 7,
+    imageKey: "treasure",
     goals: [
       { id: "g1", description: "Learn numbers 1 through 10", targetCount: 10 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -628,6 +640,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 10,
     estimatedMinutes: 6,
+    imageKey: "earth",
     goals: [
       { id: "g1", description: "Learn 5 color words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -666,6 +679,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 7,
+    imageKey: "palace",
     goals: [
       { id: "g1", description: "Learn all 7 days of the week", targetCount: 7 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -704,6 +718,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 7,
+    imageKey: "mascotLogo",
     goals: [
       { id: "g1", description: "Learn 5 family words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },
@@ -742,6 +757,7 @@ export const LESSONS: Lesson[] = [
     difficulty: "beginner",
     xpReward: 12,
     estimatedMinutes: 8,
+    imageKey: "streakFire",
     goals: [
       { id: "g1", description: "Learn 5 food and drink words", targetCount: 5 },
       { id: "g2", description: "Complete 3 practice activities", targetCount: 3 },

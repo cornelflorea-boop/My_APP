@@ -52,6 +52,16 @@ export interface Phrase {
 
 // ─── Lesson ───────────────────────────────────────────────────────────────────
 
+export type LessonImageKey =
+  | "mascotWelcome"
+  | "mascotAuth"
+  | "treasure"
+  | "earth"
+  | "palace"
+  | "mascotLogo"
+  | "streakFire"
+  | "icon";
+
 export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
 export interface LessonGoal {
@@ -79,6 +89,7 @@ export interface Lesson {
   difficulty: DifficultyLevel;
   xpReward: number;
   estimatedMinutes: number;
+  imageKey: LessonImageKey;
   goals: LessonGoal[];
   vocabulary: VocabularyItem[];
   phrases: Phrase[];

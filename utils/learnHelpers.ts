@@ -26,30 +26,8 @@ export function getLessonStatus(lessonId: string): LessonStatus {
   return MOCK_PROGRESS[lessonId] ?? "not_started";
 }
 
-export function getLessonImage(lesson: Lesson): number | { uri: string } {
-  const t = lesson.title.toLowerCase();
-  if (t.includes("hello") || t.includes("goodbye") || t.includes("greet")) {
-    return Images.mascotWelcome;
-  }
-  if (t.includes("introduc") || t.includes("yourself")) {
-    return Images.mascotAuth;
-  }
-  if (t.includes("number") || t.includes("count")) {
-    return Images.treasure;
-  }
-  if (t.includes("color") || t.includes("colour")) {
-    return Images.earth;
-  }
-  if (t.includes("day") || t.includes("week")) {
-    return Images.palace;
-  }
-  if (t.includes("famil")) {
-    return Images.mascotLogo;
-  }
-  if (t.includes("food") || t.includes("drink") || t.includes("eat")) {
-    return Images.streakFire;
-  }
-  return { uri: `https://picsum.photos/seed/${encodeURIComponent(lesson.id)}/128/128` };
+export function getLessonImage(lesson: Lesson): number {
+  return Images[lesson.imageKey] ?? Images.mascotWelcome;
 }
 
 export function fmtTime(s: number): string {
